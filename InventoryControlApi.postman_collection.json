@@ -1,0 +1,401 @@
+{
+	"info": {
+		"_postman_id": "b08c5266-d4af-4b63-b808-ccb43c786918",
+		"name": "InventoryControlApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Регистрация",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/users/signup?email=b@b.com&password=11111b",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"users",
+						"signup"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "b@b.com"
+						},
+						{
+							"key": "password",
+							"value": "11111b"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Авторизация",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/users/signin?email=admin@gmail.com&password=admin",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"users",
+						"signin"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "admin@gmail.com"
+						},
+						{
+							"key": "password",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Выход",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/users/logout",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"users",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить юзеров по email",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/users/a",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"users",
+						"a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить всех юзеров",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/users",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавить роль пользователю",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/users/dcec8701-3a56-4208-8119-0086af8aa636/role/admin/attach",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"users",
+						"dcec8701-3a56-4208-8119-0086af8aa636",
+						"role",
+						"admin",
+						"attach"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Убрать у юзера роль",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/users/dcec8701-3a56-4208-8119-0086af8aa636/role/admin/remove",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"users",
+						"dcec8701-3a56-4208-8119-0086af8aa636",
+						"role",
+						"admin",
+						"remove"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить все предметы",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/items",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Поиск предметов по названию",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/items/one",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"items",
+						"one"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Изменить товар",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/items/update?itemId=8082a425-eeef-4c71-d258-08da357ee26a&name=ДСП&amount=69&cost=9",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"items",
+						"update"
+					],
+					"query": [
+						{
+							"key": "itemId",
+							"value": "8082a425-eeef-4c71-d258-08da357ee26a"
+						},
+						{
+							"key": "name",
+							"value": "ДСП"
+						},
+						{
+							"key": "amount",
+							"value": "69"
+						},
+						{
+							"key": "cost",
+							"value": "9"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Фильтрайия и сортировка предметов",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/items/filter?name&costFrom=&costTo=&categories=&sortIsAscending",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"items",
+						"filter"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": null
+						},
+						{
+							"key": "costFrom",
+							"value": ""
+						},
+						{
+							"key": "costTo",
+							"value": ""
+						},
+						{
+							"key": "categories",
+							"value": ""
+						},
+						{
+							"key": "sortIsAscending",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавить новый предмет",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/items/add?name=Гвоздь 25 мм&amount=1000&cost=2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"items",
+						"add"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Гвоздь 25 мм"
+						},
+						{
+							"key": "amount",
+							"value": "1000"
+						},
+						{
+							"key": "cost",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Купить предмет",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/items/buy?itemId&amount=10",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"items",
+						"buy"
+					],
+					"query": [
+						{
+							"key": "itemId",
+							"value": null
+						},
+						{
+							"key": "amount",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Оформить предзаказ",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/items/preorder?itemId=8082a425-eeef-4c71-d258-08da357ee26a&amount=3",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"items",
+						"preorder"
+					],
+					"query": [
+						{
+							"key": "itemId",
+							"value": "8082a425-eeef-4c71-d258-08da357ee26a"
+						},
+						{
+							"key": "amount",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
