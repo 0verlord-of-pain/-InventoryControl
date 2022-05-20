@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using InventoryСontrol.Api.Persistence;
 using InventoryСontrol.Application.CQRS.UserAccounts.Users.Queries;
@@ -16,9 +15,9 @@ namespace InventoryСontrol.Api.Controllers
     [Route("api/users")]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly IUserAccountQuery _iUserAccountQuery;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
 
         public AccountController(
             UserManager<User> userManager,
@@ -36,31 +35,19 @@ namespace InventoryСontrol.Api.Controllers
             [FromQuery] string email,
             [FromQuery] string password)
         {
-            if (!EmailValidator.IsValid(email))
-            {
-                return BadRequest();
-            }
+            if (!EmailValidator.IsValid(email)) return BadRequest();
 
-            if (!await new PasswordValidator(_userManager).IsValidAsync(password))
-            {
-                return BadRequest();
-            }
+            if (!await new PasswordValidator(_userManager).IsValidAsync(password)) return BadRequest();
 
             var user = Domain.User.Create(email);
 
             var result = await _userManager.CreateAsync(user, password);
 
-            if (result.TryGetErrors(out _))
-            {
-                return BadRequest();
-            }
+            if (result.TryGetErrors(out _)) return BadRequest();
 
             var addToRoleResult = await _userManager.AddToRoleAsync(user, "User");
 
-            if (addToRoleResult.TryGetErrors(out _))
-            {
-                return BadRequest();
-            }
+            if (addToRoleResult.TryGetErrors(out _)) return BadRequest();
 
             return Ok();
         }
@@ -76,18 +63,12 @@ namespace InventoryСontrol.Api.Controllers
             if (EmailValidator.IsValid(email))
             {
                 var user = await _userManager.FindByEmailAsync(email);
-                if (user != null)
-                {
-                    userName = user.UserName;
-                }
+                if (user != null) userName = user.UserName;
             }
-            var result = await _signInManager.
-                PasswordSignInAsync(userName, password, false, false);
 
-            if (!result.Succeeded)
-            {
-                return BadRequest();
-            }
+            var result = await _signInManager.PasswordSignInAsync(userName, password, false, false);
+
+            if (!result.Succeeded) return BadRequest();
 
             return Ok();
         }

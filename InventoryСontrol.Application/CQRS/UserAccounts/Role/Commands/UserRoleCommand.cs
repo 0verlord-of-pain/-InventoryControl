@@ -32,10 +32,7 @@ namespace InventoryСontrol.Application.CQRS.UserAccounts.Role.Commands
             var user = await _context.Users.FindAsync(userId.ToString());
             var result = await _userManager.AddToRoleAsync(user, role);
 
-            if (result.TryGetErrors(out var error))
-            {
-                throw new ArgumentException(error);
-            }
+            if (result.TryGetErrors(out var error)) throw new ArgumentException(error);
 
             var userView = _mapper.Map<UserAccountRoleView>(user);
 
@@ -56,10 +53,7 @@ namespace InventoryСontrol.Application.CQRS.UserAccounts.Role.Commands
             var user = await _context.Users.FindAsync(userId.ToString());
             var result = await _userManager.RemoveFromRoleAsync(user, role);
 
-            if (result.TryGetErrors(out var error))
-            {
-                throw new ArgumentException(error);
-            }
+            if (result.TryGetErrors(out var error)) throw new ArgumentException(error);
 
             var userView = _mapper.Map<UserAccountRoleView>(user);
 

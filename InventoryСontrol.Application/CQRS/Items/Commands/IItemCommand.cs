@@ -11,17 +11,23 @@ namespace InventoryСontrol.Application.CQRS.Items.Commands
             string name,
             int? amount,
             int? coast);
-        public Task<ItemView> AddItemAsync(
+
+        public Task<ItemView> AddAsync(
             string name,
             int amount,
             int cost);
-        public Task BuyItemsAsync(
+
+        public Task BuyAsync(
             Guid itemId,
             int amount);
 
         public Task PreOrderAsync(
-            string UserId,
+            string userId,
             Guid itemId,
             int amount);
+
+        public Task AddCategoryToItemAsync(
+            Guid itemId,
+            Guid categoryId);
     }
 }

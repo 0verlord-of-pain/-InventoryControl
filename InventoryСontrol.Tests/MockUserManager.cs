@@ -8,7 +8,8 @@ namespace InventoryСontrol.Tests
         public static UserManager<TUser> UserManager<TUser>() where TUser : class
         {
             var mockStore = Mock.Of<IUserStore<TUser>>();
-            var mockUserManager = new Mock<UserManager<TUser>>(mockStore, null, null, null, null, null, null, null, null);
+            var mockUserManager =
+                new Mock<UserManager<TUser>>(mockStore, null, null, null, null, null, null, null, null);
 
             mockUserManager
                 .Setup(x => x.AddToRoleAsync(It.IsAny<TUser>(), It.IsAny<string>()))

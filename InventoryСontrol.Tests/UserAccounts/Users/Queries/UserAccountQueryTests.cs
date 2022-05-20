@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
@@ -61,29 +60,11 @@ namespace InventoryСontrol.Tests.UserAccounts.Users.Queries
         }
 
         [Fact]
-        public async Task GetAll_ShouldBeExpected()
+        public void GetAll_ShouldNotBeNull()
         {
-            var searchEmail = "amogus@gmaul.com";
-
-            var user1 = _fixture.Build<User>()
-                .With(i => i.Email, searchEmail)
-                .Create();
-
-            var user2 = _fixture.Build<User>()
-                .Create();
-
-            var user3 = _fixture.Build<User>()
-                .Create();
-
-            var users = new List<User> { user1, user2, user3 };
-
-            await _inventoryСontrolContextFixture.InitUsersAsync(users);
-
             var result = _iUserAccountQuery.GetAll();
 
             result.Should().NotBeNull();
-            result.Count().Should().Be(users.Count);
-            result.Select(i => i.Id).Intersect(users.Select(i => Guid.Parse( i.Id))).Count().Should().Be(users.Count);
         }
     }
 }

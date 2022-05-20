@@ -1,9 +1,10 @@
-﻿using InventoryСontrol.Application.CQRS.UserAccounts.Views;
+﻿using AutoMapper;
+using InventoryСontrol.Application.CQRS.UserAccounts.Views;
 using InventoryСontrol.Domain;
 
 namespace InventoryСontrol.Application.Mapper
 {
-    public sealed class RegisterViews : AutoMapper.Profile
+    public sealed class RegisterViews : Profile
     {
         public RegisterViews()
         {

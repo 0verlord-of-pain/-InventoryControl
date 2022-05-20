@@ -3,6 +3,8 @@ using System.Reflection;
 using InventoryСontrol.Api.Infrastructure;
 using InventoryСontrol.Api.Infrastructure.Helpers;
 using InventoryСontrol.Api.Infrastructure.Seed;
+using InventoryСontrol.Application.CQRS.Categories.Commands;
+using InventoryСontrol.Application.CQRS.Categories.Queries;
 using InventoryСontrol.Application.CQRS.Items.Commands;
 using InventoryСontrol.Application.CQRS.Items.Queries;
 using InventoryСontrol.Application.CQRS.UserAccounts.Role.Commands;
@@ -52,6 +54,8 @@ namespace InventoryСontrol.Api
             services.AddTransient<IItemCommand, ItemCommand>();
             services.AddTransient<IUserRoleCommand, UserRoleCommand>();
             services.AddTransient<IUserAccountQuery, UserAccountQuery>();
+            services.AddTransient<ICategoryCommand, CategoryCommand>();
+            services.AddTransient<ICategoryQuery, CategoryQuery>();
 
             services.AddAuthenticationCustom();
 
@@ -61,10 +65,7 @@ namespace InventoryСontrol.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
 
@@ -73,10 +74,7 @@ namespace InventoryСontrol.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
             app.UseExceptionHandler(appError =>
             {

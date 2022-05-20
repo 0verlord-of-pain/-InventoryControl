@@ -1,11 +1,9 @@
-﻿using InventoryСontrol.Domain;
-using InventoryСontrol.Storage.Persistence;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using InventoryСontrol.Domain;
+using InventoryСontrol.Storage.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventoryСontrol.Tests
 {
@@ -23,15 +21,14 @@ namespace InventoryСontrol.Tests
             context = new InventoryСontrolContext(options);
         }
 
+        public void Dispose()
+        {
+            context?.Dispose();
+        }
+
         public async Task InitUsersAsync(IEnumerable<User> users)
         {
             context.Users.AddRange(users);
-            await context.SaveChangesAsync();
-        }
-
-        public async Task InitRolesAsync(IEnumerable<IdentityRole> roles)
-        {
-            context.Roles.AddRange(roles);
             await context.SaveChangesAsync();
         }
 
@@ -51,11 +48,6 @@ namespace InventoryСontrol.Tests
         {
             context.ItemCategories.AddRange(itemCategory);
             await context.SaveChangesAsync();
-        }
-
-        public void Dispose()
-        {
-            context?.Dispose();
         }
     }
 }
