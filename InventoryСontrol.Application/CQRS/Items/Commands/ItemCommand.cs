@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using InventoryСontrol.Application.CQRS.Items.Views;
@@ -23,44 +24,32 @@ namespace InventoryСontrol.Application.CQRS.Items.Commands
         }
 
         public async Task<ItemView> UpdateAsync(
-           Guid itemId,
-           string name,
-           int? amount,
-           int? cost)
+            Guid itemId,
+            string name,
+            int? amount,
+            int? cost)
         {
-            if (!await _context.TryGetAsync(itemId))
-            {
-                throw new ArgumentNullException("Предмет не найден");
-            }
+            if (!await _context.TryGetItemAsync(itemId)) throw new ArgumentNullException("Предмет не найден");
 
-            var result = await _context.ItemCategories
+            var item = await _context.ItemCategories
+                .Where(i => i.Item.ItemId.Equals(itemId))
                 .Include(i => i.Item)
                 .Include(i => i.Category)
+                .Select(i => i.Item)
                 .FirstOrDefaultAsync();
 
-            var item = result.Item;
-
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                item.Name = name;
-            }
+            if (!string.IsNullOrWhiteSpace(name)) item.Name = name;
 
             if (amount.HasValue)
             {
-                if (amount <= 0)
-                {
-                    throw new ArgumentException("Количество предмета должно быть больше 0");
-                }
+                if (amount <= 0) throw new ArgumentException("Количество предмета должно быть больше 0");
 
                 item.Amount = (int)amount;
             }
 
             if (cost.HasValue)
             {
-                if (cost <= 0)
-                {
-                    throw new ArgumentException("Цена предмета должно быть больше 0");
-                }
+                if (cost <= 0) throw new ArgumentException("Цена предмета должно быть больше 0");
 
                 item.Cost = (int)cost;
             }
@@ -70,23 +59,14 @@ namespace InventoryСontrol.Application.CQRS.Items.Commands
             return _mapper.Map<ItemView>(item);
         }
 
-        public async Task<ItemView> AddItemAsync(
+        public async Task<ItemView> AddAsync(
             string name,
             int amount,
             int cost)
         {
-            if (await _context.TryGetAsync(name))
-            {
-                throw new ArgumentException("Такой предмет уже существует");
-            }
-            if (amount <= 0)
-            {
-                throw new ArgumentException("Количество предмета должно быть больше 0");
-            }
-            if (cost <= 0)
-            {
-                throw new ArgumentException("Цена предмета должно быть больше 0");
-            }
+            if (await _context.TryGetItemAsync(name)) throw new ArgumentException("Такой предмет уже существует");
+            if (amount <= 0) throw new ArgumentException("Количество предмета должно быть больше 0");
+            if (cost <= 0) throw new ArgumentException("Цена предмета должно быть больше 0");
 
             _context.Items.Add(Item.Create(name, cost, amount));
 
@@ -98,14 +78,11 @@ namespace InventoryСontrol.Application.CQRS.Items.Commands
             return _mapper.Map<ItemView>(item);
         }
 
-        public async Task BuyItemsAsync(
+        public async Task BuyAsync(
             Guid itemId,
             int amount)
         {
-            if (!await _context.TryGetAsync(itemId))
-            {
-                throw new ArgumentNullException("Предмет не найден");
-            }
+            if (!await _context.TryGetItemAsync(itemId)) throw new ArgumentNullException("Предмет не найден");
 
             var item = await _context.Items.FindAsync(itemId);
 
@@ -120,20 +97,36 @@ namespace InventoryСontrol.Application.CQRS.Items.Commands
             Guid itemId,
             int amount)
         {
-            if (!await _context.TryGetAsync(itemId))
-            {
-                throw new ArgumentNullException("Предмет не найден");
-            }
+            if (!await _context.TryGetItemAsync(itemId)) throw new ArgumentNullException("Предмет не найден");
 
             var item = await _context.Items.FindAsync(itemId);
 
-            if (item.Amount >= amount) throw new ArgumentException("Предмет есть на складке, оформить предзаказ не возможно");
+            if (item.Amount >= amount)
+                throw new ArgumentException("Предмет есть на складке, оформить предзаказ не возможно");
 
             var user = await _context.Users.FirstOrDefaultAsync(i => i.Id.Equals(UserId));
 
             var preOrder = PreOrder.Create(item, user, amount);
 
             _context.PreOrders.Add(preOrder);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddCategoryToItemAsync(
+            Guid itemId,
+            Guid categoryId)
+        {
+            if (!await _context.TryGetItemAsync(itemId)) throw new ArgumentNullException("Предмет не найден");
+
+            if (!await _context.TryGetCategoryAsync(categoryId)) throw new ArgumentNullException("Категория не найден");
+
+            var item = await _context.Items.FirstOrDefaultAsync(i => i.ItemId.Equals(itemId));
+
+            var category = await _context.Categories.FirstOrDefaultAsync(i => i.CategoryId.Equals(categoryId));
+
+
+            await _context.ItemCategories.AddAsync(ItemCategory.Create(item, category));
 
             await _context.SaveChangesAsync();
         }

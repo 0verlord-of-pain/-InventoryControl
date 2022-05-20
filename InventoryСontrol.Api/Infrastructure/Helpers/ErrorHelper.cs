@@ -8,10 +8,7 @@ namespace InventoryСontrol.Api.Infrastructure.Helpers
     {
         public static ErrorResponse CreateErrorResponse(Exception exception, bool includeStackTrace = false)
         {
-            if (exception == null)
-            {
-                return null;
-            }
+            if (exception == null) return null;
 
             ErrorResponse errorResponse;
 
@@ -33,10 +30,7 @@ namespace InventoryСontrol.Api.Infrastructure.Helpers
                     return null;
             }
 
-            if (includeStackTrace)
-            {
-                errorResponse.SetStackTrace(exception.StackTrace);
-            }
+            if (includeStackTrace) errorResponse.SetStackTrace(exception.StackTrace);
 
             return errorResponse;
         }

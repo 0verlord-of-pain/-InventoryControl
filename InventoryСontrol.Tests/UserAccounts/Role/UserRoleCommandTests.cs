@@ -7,6 +7,7 @@ using FluentAssertions;
 using InventoryСontrol.Application.CQRS.UserAccounts.Role.Commands;
 using InventoryСontrol.Application.CQRS.UserAccounts.Views;
 using InventoryСontrol.Domain;
+using InventoryСontrol.Domain.Enum;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using Xunit;
@@ -18,8 +19,8 @@ namespace InventoryСontrol.Tests.UserAccounts.Role
         private readonly IFixture _fixture = new Fixture();
         private readonly InventoryСontrolContextFixture _inventoryСontrolContextFixture;
         private readonly IUserRoleCommand _iUserRoleCommand;
-        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
 
         public UserRoleCommandTests()
         {
@@ -42,7 +43,7 @@ namespace InventoryСontrol.Tests.UserAccounts.Role
         [Fact]
         public async Task AddUserRoleAsync_ShouldBeExpected()
         {
-            var attachRole = Domain.Enum.Roles.Admin.ToString();
+            var attachRole = Roles.Admin.ToString();
             var initUser = _fixture.Build<User>()
                 .Create();
 
@@ -58,7 +59,7 @@ namespace InventoryСontrol.Tests.UserAccounts.Role
         [Fact]
         public async Task RemoveUserRoleAsync_ShouldBeExpected()
         {
-            var removeRole = Domain.Enum.Roles.Admin.ToString();
+            var removeRole = Roles.Admin.ToString();
             var initUser = _fixture.Build<User>()
                 .Create();
 

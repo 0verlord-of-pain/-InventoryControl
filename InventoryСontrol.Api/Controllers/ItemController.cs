@@ -14,8 +14,8 @@ namespace InventoryСontrol.Api.Controllers
     [Route("api/items")]
     public class ItemController : Controller
     {
-        private readonly IItemQuery _iItemQuery;
         private readonly IItemCommand _iItemCommand;
+        private readonly IItemQuery _iItemQuery;
         private readonly UserManager<User> _userManager;
 
         public ItemController(
@@ -47,7 +47,7 @@ namespace InventoryСontrol.Api.Controllers
 
         [HttpPut("update")]
         [Authorize(Policy = Policies.AdminOrManager)]
-        public async Task<IActionResult> Update(
+        public async Task<IActionResult> UpdateItem(
             [FromQuery] Guid itemId,
             [FromQuery] string name,
             [FromQuery] int? amount,
@@ -82,7 +82,7 @@ namespace InventoryСontrol.Api.Controllers
             [FromQuery] int amount,
             [FromQuery] int cost)
         {
-            var result = await _iItemCommand.AddItemAsync(
+            var result = await _iItemCommand.AddAsync(
                 name,
                 amount,
                 cost);
@@ -95,7 +95,7 @@ namespace InventoryСontrol.Api.Controllers
             [FromQuery] Guid itemId,
             [FromQuery] int amount)
         {
-            await _iItemCommand.BuyItemsAsync(
+            await _iItemCommand.BuyAsync(
                 itemId,
                 amount);
             return Ok();
@@ -113,6 +113,18 @@ namespace InventoryСontrol.Api.Controllers
                 userId,
                 itemId,
                 amount);
+            return Ok();
+        }
+
+        [HttpPost("{itemId/categories/categoryId/add}")]
+        [Authorize(Policy = Policies.AdminOrManager)]
+        public async Task<IActionResult> PreOrder(
+            [FromRoute] Guid itemId,
+            [FromRoute] Guid categoryId)
+        {
+            await _iItemCommand.AddCategoryToItemAsync(
+                itemId,
+                categoryId);
             return Ok();
         }
     }

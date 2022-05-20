@@ -47,45 +47,29 @@ namespace InventoryСontrol.Application.CQRS.Items.Queries
             List<string> categories,
             bool? sortIsAscending = true)
         {
-
             var items = await _context.Items
                 .Include(i => i.Categories)
                 .ToArrayAsync();
 
 
             if (categories != null && categories.Any() && categories.Exists(i => i != null))
-            {
                 items = items
                     .Where(i => i.Categories.Any(x => categories.Contains(x.Category.Name)))
                     .ToArray();
-            }
 
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                items = items.Where(i => i.Name.Contains(name)).ToArray();
-            }
+            if (!string.IsNullOrWhiteSpace(name)) items = items.Where(i => i.Name.Contains(name)).ToArray();
 
-            if (costFrom.HasValue)
-            {
-                items = items.Where(i => i.Cost >= costFrom).ToArray();
-            }
+            if (costFrom.HasValue) items = items.Where(i => i.Cost >= costFrom).ToArray();
 
-            if (costTo.HasValue)
-            {
-                items = items.Where(i => i.Cost <= costTo).ToArray();
-            }
+            if (costTo.HasValue) items = items.Where(i => i.Cost <= costTo).ToArray();
 
             if (sortIsAscending.HasValue)
             {
                 if (sortIsAscending.Value)
-                {
                     items.OrderBy(i => i.UpdatedOnUtc);
-                }
 
                 else
-                {
                     items.OrderByDescending(i => i.UpdatedOnUtc);
-                }
             }
 
             return _mapper.Map<IEnumerable<ItemView>>(items);

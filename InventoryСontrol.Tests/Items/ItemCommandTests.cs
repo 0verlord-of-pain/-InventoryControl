@@ -1,15 +1,15 @@
-﻿using AutoFixture;
-using FluentAssertions;
-using InventoryСontrol.Application.CQRS.Items.Commands;
-using InventoryСontrol.Domain;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoFixture;
 using AutoMapper;
+using FluentAssertions;
+using InventoryСontrol.Application.CQRS.Items.Commands;
 using InventoryСontrol.Application.CQRS.Items.Views;
+using InventoryСontrol.Domain;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using Xunit;
 
 namespace InventoryСontrol.Tests.Items
@@ -17,8 +17,8 @@ namespace InventoryСontrol.Tests.Items
     public class ItemCommandTests : IClassFixture<InventoryСontrolContextFixture>
     {
         private readonly IFixture _fixture = new Fixture();
-        private readonly InventoryСontrolContextFixture _inventoryСontrolContextFixture;
         private readonly IItemCommand _iItemCommand;
+        private readonly InventoryСontrolContextFixture _inventoryСontrolContextFixture;
         private readonly IMapper _mapper;
 
         public ItemCommandTests()
@@ -44,20 +44,20 @@ namespace InventoryСontrol.Tests.Items
         {
             var itemId = Guid.NewGuid();
             var item = _fixture.Build<Item>()
-                            .With(i => i.ItemId, itemId)
-                            .With(i => i.Amount, 10)
-                            .With(i => i.Cost, 100)
-                            .With(i => i.Name, "aaa")
-                            .Create();
+                .With(i => i.ItemId, itemId)
+                .With(i => i.Amount, 10)
+                .With(i => i.Cost, 100)
+                .With(i => i.Name, "aaa")
+                .Create();
 
             await _inventoryСontrolContextFixture.InitItemsAsync(new List<Item> { item });
 
             var itemExpected = _fixture.Build<Item>()
-                            .With(i => i.ItemId, itemId)
-                            .With(i => i.Amount, 5)
-                            .With(i => i.Cost, 50)
-                            .With(i => i.Name, "bbb")
-                            .Create();
+                .With(i => i.ItemId, itemId)
+                .With(i => i.Amount, 5)
+                .With(i => i.Cost, 50)
+                .With(i => i.Name, "bbb")
+                .Create();
 
             var result = await _iItemCommand.UpdateAsync(itemId, "bbb", 5, 50);
 
@@ -77,7 +77,7 @@ namespace InventoryСontrol.Tests.Items
                 .With(i => i.Name, "ccc")
                 .Create();
 
-            await _iItemCommand.AddItemAsync("ccc", 10, 100);
+            await _iItemCommand.AddAsync("ccc", 10, 100);
 
             var result = await _inventoryСontrolContextFixture.context.Items
                 .FirstOrDefaultAsync();
@@ -101,7 +101,7 @@ namespace InventoryСontrol.Tests.Items
 
             await _inventoryСontrolContextFixture.InitItemsAsync(new List<Item> { item });
 
-            await _iItemCommand.BuyItemsAsync(itemId, 5);
+            await _iItemCommand.BuyAsync(itemId, 5);
 
             var itemExpected = _fixture.Build<Item>()
                 .With(i => i.ItemId, itemId)
@@ -111,7 +111,7 @@ namespace InventoryСontrol.Tests.Items
                 .Create();
 
             var result = await _inventoryСontrolContextFixture.context.Items
-                .Where(i=>i.ItemId.Equals(item.ItemId))
+                .Where(i => i.ItemId.Equals(item.ItemId))
                 .FirstOrDefaultAsync();
 
             result.Should().NotBeNull();
@@ -154,6 +154,34 @@ namespace InventoryСontrol.Tests.Items
             result.Should().NotBeNull();
             result.ItemId.Should().Be(itemId);
             result.UserId.Should().Be(userId);
+        }
+
+        [Fact]
+        public async Task AddCategoryToItemAsync_ShouldBeExpected()
+        {
+            var itemId = Guid.NewGuid();
+            var categoryId = Guid.NewGuid();
+
+            var item = _fixture.Build<Item>()
+                .With(i => i.ItemId, itemId)
+                .Create();
+
+            var category = _fixture.Build<Category>()
+                .With(i => i.CategoryId, categoryId)
+                .Create();
+
+            await _inventoryСontrolContextFixture.InitCategoresAsync(new List<Category> { category });
+            await _inventoryСontrolContextFixture.InitItemsAsync(new List<Item> { item });
+
+            await _iItemCommand.AddCategoryToItemAsync(itemId, categoryId);
+
+            var result = await _inventoryСontrolContextFixture.context.Items
+                .Include(i => i.Categories)
+                .FirstOrDefaultAsync(i => i.ItemId.Equals(itemId));
+
+            result.Should().NotBeNull();
+            result.Categories.Any(i => i.Category.CategoryId.Equals(category.CategoryId))
+                .Should().Be(true);
         }
     }
 }
