@@ -42,10 +42,10 @@ namespace InventoryСontrol.Api.Controllers
         [HttpPut("update")]
         [Authorize(Policy = Policies.AdminOrManager)]
         public async Task<IActionResult> UpdateCategory(
-            [FromQuery] Guid itemId,
+            [FromQuery] Guid categoryId,
             [FromQuery] string name)
         {
-            var result = await _iCategoryCommand.UpdateAsync(itemId, name);
+            var result = await _iCategoryCommand.UpdateAsync(categoryId, name);
             return Ok(result);
         }
     }
