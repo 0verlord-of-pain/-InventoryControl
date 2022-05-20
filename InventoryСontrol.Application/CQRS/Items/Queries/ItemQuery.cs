@@ -25,6 +25,7 @@ namespace InventoryСontrol.Application.CQRS.Items.Queries
         {
             var result = await _context.Items
                 .Include(i => i.Categories)
+                .ThenInclude(i => i.Category)
                 .ToArrayAsync();
 
             return _mapper.Map<IEnumerable<ItemView>>(result);
@@ -32,9 +33,11 @@ namespace InventoryСontrol.Application.CQRS.Items.Queries
 
         public async Task<IEnumerable<ItemView>> SearchAsync(string name)
         {
+
             var result = await _context.Items
-                .Where(i => i.Name.Contains(name))
                 .Include(i => i.Categories)
+                .ThenInclude(i => i.Category)
+                .Where(i=>i.Name.Contains(name))
                 .ToArrayAsync();
 
             return _mapper.Map<IEnumerable<ItemView>>(result);
@@ -47,32 +50,35 @@ namespace InventoryСontrol.Application.CQRS.Items.Queries
             List<string> categories,
             bool? sortIsAscending = true)
         {
-            var items = await _context.Items
+            var result = await _context.Items
                 .Include(i => i.Categories)
+                .ThenInclude(i => i.Category)
                 .ToArrayAsync();
 
-
             if (categories != null && categories.Any() && categories.Exists(i => i != null))
-                items = items
+            {
+                result = result
                     .Where(i => i.Categories.Any(x => categories.Contains(x.Category.Name)))
                     .ToArray();
+            }
 
-            if (!string.IsNullOrWhiteSpace(name)) items = items.Where(i => i.Name.Contains(name)).ToArray();
+            if (!string.IsNullOrWhiteSpace(name)) result = result.Where(i => i.Name.Contains(name)).ToArray();
 
-            if (costFrom.HasValue) items = items.Where(i => i.Cost >= costFrom).ToArray();
+            if (costFrom.HasValue) result = result.Where(i => i.Cost >= costFrom).ToArray();
 
-            if (costTo.HasValue) items = items.Where(i => i.Cost <= costTo).ToArray();
+            if (costTo.HasValue) result = result.Where(i => i.Cost <= costTo).ToArray();
 
             if (sortIsAscending.HasValue)
             {
                 if (sortIsAscending.Value)
-                    items.OrderBy(i => i.UpdatedOnUtc);
+                    result.OrderBy(i => i.UpdatedOnUtc);
 
                 else
-                    items.OrderByDescending(i => i.UpdatedOnUtc);
+                    result.OrderByDescending(i => i.UpdatedOnUtc);
             }
 
-            return _mapper.Map<IEnumerable<ItemView>>(items);
+
+            return _mapper.Map<IEnumerable<ItemView>>(result);
         }
     }
 }

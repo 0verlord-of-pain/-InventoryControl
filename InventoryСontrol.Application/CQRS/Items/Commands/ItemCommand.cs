@@ -31,32 +31,31 @@ namespace InventoryСontrol.Application.CQRS.Items.Commands
         {
             if (!await _context.TryGetItemAsync(itemId)) throw new ArgumentNullException("Предмет не найден");
 
-            var item = await _context.ItemCategories
-                .Where(i => i.Item.ItemId.Equals(itemId))
-                .Include(i => i.Item)
-                .Include(i => i.Category)
-                .Select(i => i.Item)
+            var result = await _context.Items
+                .Where(i => i.ItemId.Equals(itemId))
+                .Include(i => i.Categories)
+                .ThenInclude(i => i.Category)
                 .FirstOrDefaultAsync();
 
-            if (!string.IsNullOrWhiteSpace(name)) item.Name = name;
+            if (!string.IsNullOrWhiteSpace(name)) result.Name = name;
 
             if (amount.HasValue)
             {
                 if (amount <= 0) throw new ArgumentException("Количество предмета должно быть больше 0");
 
-                item.Amount = (int)amount;
+                result.Amount = (int)amount;
             }
 
             if (cost.HasValue)
             {
                 if (cost <= 0) throw new ArgumentException("Цена предмета должно быть больше 0");
 
-                item.Cost = (int)cost;
+                result.Cost = (int)cost;
             }
 
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<ItemView>(item);
+            return _mapper.Map<ItemView>(result);
         }
 
         public async Task<ItemView> AddAsync(
@@ -66,7 +65,7 @@ namespace InventoryСontrol.Application.CQRS.Items.Commands
         {
             if (await _context.TryGetItemAsync(name)) throw new ArgumentException("Такой предмет уже существует");
             if (amount <= 0) throw new ArgumentException("Количество предмета должно быть больше 0");
-            if (cost <= 0) throw new ArgumentException("Цена предмета должно быть больше 0");
+            if (cost <= 0) throw new ArgumentException("Цена предмета должна быть больше 0");
 
             _context.Items.Add(Item.Create(name, cost, amount));
 
@@ -113,7 +112,7 @@ namespace InventoryСontrol.Application.CQRS.Items.Commands
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddCategoryToItemAsync(
+        public async Task<ItemView> AddCategoryToItemAsync(
             Guid itemId,
             Guid categoryId)
         {
@@ -121,14 +120,24 @@ namespace InventoryСontrol.Application.CQRS.Items.Commands
 
             if (!await _context.TryGetCategoryAsync(categoryId)) throw new ArgumentNullException("Категория не найден");
 
+            var result = await _context.Items
+                .Include(i => i.Categories)
+                .ThenInclude(i => i.Category)
+                .FirstOrDefaultAsync(i => i.ItemId.Equals(itemId));
+
+            if (result.Categories.Any(i => i.CategoryId.Equals(categoryId)))
+            {
+                throw new ArgumentException("У данного предмета уже есть данная категория");
+            }
+
             var item = await _context.Items.FirstOrDefaultAsync(i => i.ItemId.Equals(itemId));
 
             var category = await _context.Categories.FirstOrDefaultAsync(i => i.CategoryId.Equals(categoryId));
 
-
             await _context.ItemCategories.AddAsync(ItemCategory.Create(item, category));
-
             await _context.SaveChangesAsync();
+
+            return _mapper.Map<ItemView>(result);
         }
     }
 }

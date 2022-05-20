@@ -26,7 +26,7 @@ namespace InventoryСontrol.Application.CQRS.Items.Commands
             Guid itemId,
             int amount);
 
-        public Task AddCategoryToItemAsync(
+        public Task<ItemView> AddCategoryToItemAsync(
             Guid itemId,
             Guid categoryId);
     }

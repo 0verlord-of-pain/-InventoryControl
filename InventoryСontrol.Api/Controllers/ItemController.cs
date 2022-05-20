@@ -116,16 +116,16 @@ namespace InventoryСontrol.Api.Controllers
             return Ok();
         }
 
-        [HttpPost("{itemId/categories/categoryId/add}")]
+        [HttpPut("{itemId}/categories/{categoryId}/add")]
         [Authorize(Policy = Policies.AdminOrManager)]
         public async Task<IActionResult> PreOrder(
             [FromRoute] Guid itemId,
             [FromRoute] Guid categoryId)
         {
-            await _iItemCommand.AddCategoryToItemAsync(
+            var result = await _iItemCommand.AddCategoryToItemAsync(
                 itemId,
                 categoryId);
-            return Ok();
+            return Ok(result);
         }
     }
 }
