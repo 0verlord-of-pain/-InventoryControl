@@ -118,7 +118,7 @@ namespace InventoryСontrol.Api.Controllers
 
         [HttpPut("{itemId}/categories/{categoryId}/add")]
         [Authorize(Policy = Policies.AdminOrManager)]
-        public async Task<IActionResult> PreOrder(
+        public async Task<IActionResult> AddCategoryToItem(
             [FromRoute] Guid itemId,
             [FromRoute] Guid categoryId)
         {

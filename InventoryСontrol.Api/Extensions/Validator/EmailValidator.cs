@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace InventoryСontrol.Application.CQRS.UserAccounts.Validator
+namespace InventoryСontrol.Api.Extensions.Validator
 {
     public class EmailValidator
     {

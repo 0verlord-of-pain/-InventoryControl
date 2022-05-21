@@ -33,11 +33,10 @@ namespace InventoryСontrol.Application.CQRS.Items.Queries
 
         public async Task<IEnumerable<ItemView>> SearchAsync(string name)
         {
-
             var result = await _context.Items
                 .Include(i => i.Categories)
                 .ThenInclude(i => i.Category)
-                .Where(i=>i.Name.Contains(name))
+                .Where(i => i.Name.Contains(name))
                 .ToArrayAsync();
 
             return _mapper.Map<IEnumerable<ItemView>>(result);
@@ -56,11 +55,9 @@ namespace InventoryСontrol.Application.CQRS.Items.Queries
                 .ToArrayAsync();
 
             if (categories != null && categories.Any() && categories.Exists(i => i != null))
-            {
                 result = result
                     .Where(i => i.Categories.Any(x => categories.Contains(x.Category.Name)))
                     .ToArray();
-            }
 
             if (!string.IsNullOrWhiteSpace(name)) result = result.Where(i => i.Name.Contains(name)).ToArray();
 

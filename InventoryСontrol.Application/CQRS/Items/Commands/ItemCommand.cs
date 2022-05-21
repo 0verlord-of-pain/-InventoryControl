@@ -37,20 +37,20 @@ namespace InventoryСontrol.Application.CQRS.Items.Commands
                 .ThenInclude(i => i.Category)
                 .FirstOrDefaultAsync();
 
-            if (!string.IsNullOrWhiteSpace(name)) result.Name = name;
+            if (!string.IsNullOrWhiteSpace(name)) result.UpdateName(name);
 
             if (amount.HasValue)
             {
                 if (amount <= 0) throw new ArgumentException("Количество предмета должно быть больше 0");
 
-                result.Amount = (int)amount;
+                result.UpdateAmount((int)amount);
             }
 
             if (cost.HasValue)
             {
                 if (cost <= 0) throw new ArgumentException("Цена предмета должно быть больше 0");
 
-                result.Cost = (int)cost;
+                result.UpdateCost((int)cost);
             }
 
             await _context.SaveChangesAsync();
@@ -126,9 +126,7 @@ namespace InventoryСontrol.Application.CQRS.Items.Commands
                 .FirstOrDefaultAsync(i => i.ItemId.Equals(itemId));
 
             if (result.Categories.Any(i => i.CategoryId.Equals(categoryId)))
-            {
                 throw new ArgumentException("У данного предмета уже есть данная категория");
-            }
 
             var item = await _context.Items.FirstOrDefaultAsync(i => i.ItemId.Equals(itemId));
 

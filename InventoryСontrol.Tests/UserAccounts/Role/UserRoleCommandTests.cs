@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
+using InventoryСontrol.Api.Persistence;
 using InventoryСontrol.Application.CQRS.UserAccounts.Role.Commands;
 using InventoryСontrol.Application.CQRS.UserAccounts.Views;
 using InventoryСontrol.Domain;
