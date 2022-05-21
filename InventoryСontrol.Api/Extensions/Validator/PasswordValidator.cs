@@ -2,7 +2,7 @@
 using InventoryСontrol.Domain;
 using Microsoft.AspNetCore.Identity;
 
-namespace InventoryСontrol.Application.CQRS.UserAccounts.Validator
+namespace InventoryСontrol.Api.Extensions.Validator
 {
     public class PasswordValidator
     {

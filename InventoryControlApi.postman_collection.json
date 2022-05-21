@@ -94,7 +94,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/users/a",
+					"raw": "https://localhost:5001/api/users/b",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -103,7 +103,7 @@
 					"path": [
 						"api",
 						"users",
-						"a"
+						"b"
 					]
 				}
 			},
@@ -135,7 +135,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/users/dcec8701-3a56-4208-8119-0086af8aa636/role/admin/attach",
+					"raw": "https://localhost:5001/api/users/bffc18ee-5af8-4a53-bc6c-518ce3715331/role/admin/attach",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -144,7 +144,7 @@
 					"path": [
 						"api",
 						"users",
-						"dcec8701-3a56-4208-8119-0086af8aa636",
+						"bffc18ee-5af8-4a53-bc6c-518ce3715331",
 						"role",
 						"admin",
 						"attach"
@@ -159,7 +159,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/users/dcec8701-3a56-4208-8119-0086af8aa636/role/admin/remove",
+					"raw": "https://localhost:5001/api/users/bffc18ee-5af8-4a53-bc6c-518ce3715331/role/admin/remove",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -168,7 +168,7 @@
 					"path": [
 						"api",
 						"users",
-						"dcec8701-3a56-4208-8119-0086af8aa636",
+						"bffc18ee-5af8-4a53-bc6c-518ce3715331",
 						"role",
 						"admin",
 						"remove"
@@ -203,7 +203,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/items/one",
+					"raw": "https://localhost:5001/api/items/р",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -212,46 +212,7 @@
 					"path": [
 						"api",
 						"items",
-						"one"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Изменить товар",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:5001/api/items/update?itemId=8082a425-eeef-4c71-d258-08da357ee26a&name=ДСП&amount=69&cost=9",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5001",
-					"path": [
-						"api",
-						"items",
-						"update"
-					],
-					"query": [
-						{
-							"key": "itemId",
-							"value": "8082a425-eeef-4c71-d258-08da357ee26a"
-						},
-						{
-							"key": "name",
-							"value": "ДСП"
-						},
-						{
-							"key": "amount",
-							"value": "69"
-						},
-						{
-							"key": "cost",
-							"value": "9"
-						}
+						"р"
 					]
 				}
 			},
@@ -263,7 +224,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/items/filter?name&costFrom=&costTo=&categories=&sortIsAscending",
+					"raw": "https://localhost:5001/api/items/filter?name=р&costFrom=1&costTo=100",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -277,23 +238,25 @@
 					"query": [
 						{
 							"key": "name",
-							"value": null
+							"value": "р"
 						},
 						{
 							"key": "costFrom",
-							"value": ""
+							"value": "1"
 						},
 						{
 							"key": "costTo",
-							"value": ""
+							"value": "100"
 						},
 						{
 							"key": "categories",
-							"value": ""
+							"value": "",
+							"disabled": true
 						},
 						{
 							"key": "sortIsAscending",
-							"value": null
+							"value": null,
+							"disabled": true
 						}
 					]
 				}
@@ -301,12 +264,51 @@
 			"response": []
 		},
 		{
-			"name": "Добавить новый предмет",
+			"name": "Изменить товар",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/items/update?itemId=77b074e5-d33f-479d-6c7a-08da3a700d67&name=Брус&amount=69&cost=666",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"items",
+						"update"
+					],
+					"query": [
+						{
+							"key": "itemId",
+							"value": "77b074e5-d33f-479d-6c7a-08da3a700d67"
+						},
+						{
+							"key": "name",
+							"value": "Брус"
+						},
+						{
+							"key": "amount",
+							"value": "69"
+						},
+						{
+							"key": "cost",
+							"value": "666"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать новый предмет",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/items/add?name=Гвоздь 25 мм&amount=1000&cost=2",
+					"raw": "https://localhost:5001/api/items/add?name=Эшкере&amount=1000&cost=10",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -320,7 +322,7 @@
 					"query": [
 						{
 							"key": "name",
-							"value": "Гвоздь 25 мм"
+							"value": "Эшкере"
 						},
 						{
 							"key": "amount",
@@ -328,7 +330,7 @@
 						},
 						{
 							"key": "cost",
-							"value": "2"
+							"value": "10"
 						}
 					]
 				}
@@ -341,7 +343,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/items/buy?itemId&amount=10",
+					"raw": "https://localhost:5001/api/items/buy?itemId=1d6ba714-48f5-4158-b9ac-08da364a4982&amount=1",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -355,11 +357,11 @@
 					"query": [
 						{
 							"key": "itemId",
-							"value": null
+							"value": "1d6ba714-48f5-4158-b9ac-08da364a4982"
 						},
 						{
 							"key": "amount",
-							"value": "10"
+							"value": "1"
 						}
 					]
 				}
@@ -372,7 +374,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/items/preorder?itemId=8082a425-eeef-4c71-d258-08da357ee26a&amount=3",
+					"raw": "https://localhost:5001/api/items/preorder?itemId=d6c57b10-8552-47e1-b9ab-08da364a4982&amount=500",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -386,11 +388,113 @@
 					"query": [
 						{
 							"key": "itemId",
-							"value": "8082a425-eeef-4c71-d258-08da357ee26a"
+							"value": "d6c57b10-8552-47e1-b9ab-08da364a4982"
 						},
 						{
 							"key": "amount",
-							"value": "3"
+							"value": "500"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавить категорию предмету",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/items/f53cfe43-f741-4644-361e-08da3a73672d/categories/094a2c2a-ce2c-4264-3d26-08da3a700d63/add",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"items",
+						"f53cfe43-f741-4644-361e-08da3a73672d",
+						"categories",
+						"094a2c2a-ce2c-4264-3d26-08da3a700d63",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить все категории",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/categories",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать новую категорию",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/categories/add?name=2+2=5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"categories",
+						"add"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "2+2=5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Изменить название категории",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/categories/update?categoryId=5dc42837-c2f3-4d3d-5153-08da3a8869bb&name=2+2=4",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"categories",
+						"update"
+					],
+					"query": [
+						{
+							"key": "categoryId",
+							"value": "5dc42837-c2f3-4d3d-5153-08da3a8869bb"
+						},
+						{
+							"key": "name",
+							"value": "2+2=4"
 						}
 					]
 				}

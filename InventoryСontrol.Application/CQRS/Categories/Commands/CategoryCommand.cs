@@ -22,8 +22,7 @@ namespace InventoryСontrol.Application.CQRS.Categories.Commands
             _mapper = mapper;
         }
 
-        public async Task<CategoryView> AddAsync(
-            string name)
+        public async Task<CategoryView> AddAsync(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Не валидное значение: name");
 
@@ -48,7 +47,7 @@ namespace InventoryСontrol.Application.CQRS.Categories.Commands
             var category = await _context.Categories
                 .FindAsync(categoryId);
 
-            if (!string.IsNullOrWhiteSpace(name)) category.Name = name;
+            if (!string.IsNullOrWhiteSpace(name)) category.Update(name);
 
             await _context.SaveChangesAsync();
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using InventoryСontrol.Api.Extensions.Validator;
 using InventoryСontrol.Api.Persistence;
 using InventoryСontrol.Application.CQRS.UserAccounts.Users.Queries;
-using InventoryСontrol.Application.CQRS.UserAccounts.Validator;
 using InventoryСontrol.Application.CQRS.UserAccounts.Views;
 using InventoryСontrol.Application.Extensions;
 using InventoryСontrol.Domain;
